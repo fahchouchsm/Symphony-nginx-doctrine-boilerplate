@@ -1,0 +1,12 @@
+doctrine:
+    dbal:
+        driver: 'pdo_mysql'
+        host: 'db'
+        port: 3306
+        dbname: 'ecom'
+        user: 'simo'
+        password: 'pass'
+        server_version: '8.0'
+    orm:
+        auto_generate_proxy_classes: true
+        auto_mapping: true
