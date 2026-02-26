@@ -1,12 +1,18 @@
 FROM php:8.3-fpm
 
-# Install required system libs and PDO MySQL
 RUN apt-get update && apt-get install -y \
-    default-mysql-client libmariadb-dev-compat libmariadb-dev \
-    git unzip libzip-dev libicu-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo_mysql
+    libzip-dev \
+    unzip \
+    git \
+    && docker-php-ext-install \
+        pdo_mysql \
+        zip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Add composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+# Uncomment clear_env so env vars reach PHP-FPM from docker-compose
+RUN sed -i 's/;clear_env = no/clear_env = no/' /usr/local/etc/php-fpm.d/www.conf
+
+# Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html

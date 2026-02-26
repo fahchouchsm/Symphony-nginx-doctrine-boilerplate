@@ -1,42 +1,110 @@
-# Symfony E-Commerce Project
+# Symfony Starter 🚀
 
-## Overview
-This is a Symfony-based e-commerce project that allows users to manage a variety of products, handle orders, and provide a seamless shopping experience.
+Clean Symfony 7 project with **Doctrine ORM**, **Twig**, and **Docker** — ready to use.
 
-## Requirements
-- PHP >= 8.2
-- Symfony 7.4
-- Docker and Docker Compose
+## Stack
+- PHP 8.3 (FPM)
+- Nginx
+- MySQL 8.0
+- Symfony 7.1
+- Doctrine ORM + Migrations
+- Twig templating
+- Maker Bundle (for `make:entity`, `make:controller`, etc.)
 
-## Docker Setup
-This project comes with a predefined Docker setup, which includes:
-- **Nginx** running on port `8081`
-- **MySQL** running on port `3307`
+---
 
-### Getting Started
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/fahchouchsm/ecom-symfony.git
-    cd ecom-symfony
-    ```
-2. Build and run the Docker containers:
-    ```bash
-    docker-compose up --build
-    ```
-3. Access the application in your web browser:
-    [http://localhost:8081](http://localhost:8081)
+## 🏁 First-Time Setup
 
-4. Create and load the database schema:
-    ```bash
-    docker-compose exec php bin/console doctrine:schema:update --force
-    ```
+### 1. Install dependencies
+```bash
+docker-compose run --rm php composer install
+```
 
-## Basic Run Instructions
-- Use `docker-compose up` to start the environment.
-- Run the Symfony commands inside the PHP container using:
-    ```bash
-    docker-compose exec php bin/console <command>
-    ```
+### 2. Start containers
+```bash
+docker-compose up -d
+```
 
-## License
-This project is licensed under the MIT License.
+### 3. Run migrations
+```bash
+docker-compose exec php bin/console doctrine:migrations:migrate --no-interaction
+```
+
+### 4. Open in browser
+```
+http://localhost:8080/products
+```
+
+Click **"Seed Sample Data"** to populate with example products.
+
+---
+
+## ⚡ Daily Commands
+
+```bash
+# Start
+docker-compose up -d
+
+# Stop
+docker-compose down
+
+# Run a console command
+docker-compose exec php bin/console <command>
+
+# Generate a new entity
+docker-compose exec php bin/console make:entity
+
+# Generate a new controller
+docker-compose exec php bin/console make:controller
+
+# Create a migration after changing entities
+docker-compose exec php bin/console doctrine:migrations:diff
+
+# Run migrations
+docker-compose exec php bin/console doctrine:migrations:migrate
+
+# Clear cache
+docker-compose exec php bin/console cache:clear
+```
+
+---
+
+## 🗄️ Database
+
+| Setting  | Value        |
+|----------|-------------|
+| Host     | `db` (inside Docker) / `localhost:3306` (outside) |
+| Database | `symfony_db` |
+| User     | `symfony`    |
+| Password | `symfony`    |
+| Root pw  | `root`       |
+
+---
+
+## 📁 Structure
+
+```
+├── docker/
+│   ├── nginx/default.conf   # Nginx config
+│   └── php/Dockerfile       # PHP-FPM image
+├── src/
+│   ├── Controller/          # Controllers
+│   ├── Entity/              # Doctrine entities
+│   └── Repository/          # Repositories
+├── templates/               # Twig templates
+├── migrations/              # Database migrations
+├── config/                  # Symfony config
+├── public/index.php         # Front controller
+├── .env                     # Environment variables
+└── docker-compose.yml
+```
+
+---
+
+## 🔧 Reset Everything
+
+```bash
+docker-compose down -v          # Destroys DB volume too
+docker-compose up -d
+docker-compose exec php bin/console doctrine:migrations:migrate --no-interaction
+```

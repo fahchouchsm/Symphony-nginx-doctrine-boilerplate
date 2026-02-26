@@ -1,21 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product List{% endblock %}
+{% block title %}Products{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h1 class="mb-4">Products</h1>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Products <span class="badge bg-secondary">{{ products|length }}</span></h1>
+    <a href="{{ path('product_seed') }}" class="btn btn-success">+ Seed Sample Data</a>
+</div>
+
+{% if products is empty %}
+    <div class="alert alert-info text-center py-5">
+        <h4>No products yet!</h4>
+        <p>Click <strong>"Seed Sample Data"</strong> to add some products.</p>
+    </div>
+{% else %}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for product in products %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title">Product 1</h5>
-                        <p class="card-text">Description here...</p>
-                        <a href="#" class="btn btn-primary">Buy</a>
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text text-muted">{{ product.description }}</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <span class="fs-5 fw-bold text-success">${{ product.price }}</span>
+                        <span class="badge bg-light text-dark">#{{ product.id }}</span>
                     </div>
                 </div>
             </div>
-            <!-- Repeat more products -->
-        </div>
+        {% endfor %}
     </div>
+{% endif %}
 {% endblock %}
